@@ -50,6 +50,7 @@ export function initState (vm: Component) {
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
+  //data处理，响应化处理
   if (opts.data) {
     initData(vm)
   } else {
@@ -127,6 +128,7 @@ function initData (vm: Component) {
   const props = vm.$options.props
   const methods = vm.$options.methods
   let i = keys.length
+  // 判重
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
@@ -147,7 +149,7 @@ function initData (vm: Component) {
       proxy(vm, `_data`, key)
     }
   }
-  // observe data
+  // observe data：数据遍历开始了
   observe(data, true /* asRootData */)
 }
 

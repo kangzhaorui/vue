@@ -34,6 +34,7 @@ export function toggleObserving (value: boolean) {
  * object's property keys into getter/setters that
  * collect dependencies and dispatch updates.
  */
+//如果是对象就会有一个observer实例与之对应
 export class Observer {
   value: any;
   dep: Dep;
@@ -44,6 +45,7 @@ export class Observer {
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
+    // 如果当前对象是数组
     if (Array.isArray(value)) {
       if (hasProto) {
         protoAugment(value, arrayMethods)
@@ -61,6 +63,7 @@ export class Observer {
    * getter/setters. This method should only be called when
    * value type is Object.
    */
+  //如果数据是对象
   walk (obj: Object) {
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
@@ -152,17 +155,21 @@ export function defineReactive (
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-
+//递归
   let childOb = !shallow && observe(val)
+  // 数据的拦截
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
+      // 依赖收集
       if (Dep.target) {
-        dep.depend()
+        dep.depend()//追加依赖关系
+        // 判断子元素，如果有子ob存在
         if (childOb) {
           childOb.dep.depend()
+          // 如果是数组还需要继续处理
           if (Array.isArray(value)) {
             dependArray(value)
           }
@@ -187,7 +194,9 @@ export function defineReactive (
       } else {
         val = newVal
       }
+      //额外判断，如果用户设置的值是对对象，还额外需要做响应化处理
       childOb = !shallow && observe(newVal)
+      // 通知更新
       dep.notify()
     }
   })

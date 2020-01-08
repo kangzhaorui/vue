@@ -30,6 +30,7 @@ export default class Dep {
 
   depend () {
     if (Dep.target) {
+      // Dep.target是watcher实例，建立和watcher之间的关系
       Dep.target.addDep(this)
     }
   }
