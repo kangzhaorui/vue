@@ -25,7 +25,7 @@ Vue.config.isReservedTag = isReservedTag
 Vue.config.isReservedAttr = isReservedAttr
 Vue.config.getTagNamespace = getTagNamespace
 Vue.config.isUnknownElement = isUnknownElement
-
+//这个文件定义了$mount的方法，执行这个方法挂载mountComponent(this, el, hydrating)，实现patch方法（渲染dom用的，研究diff的入口）
 // install platform runtime directives & components
 extend(Vue.options.directives, platformDirectives)
 extend(Vue.options.components, platformComponents)
@@ -34,6 +34,7 @@ extend(Vue.options.components, platformComponents)
 Vue.prototype.__patch__ = inBrowser ? patch : noop
 
 // public mount method
+//定义了$mount的方法，执行这个方法挂载mountComponent(this, el, hydrating)
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean

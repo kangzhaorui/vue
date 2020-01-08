@@ -38,6 +38,7 @@ export function initLifecycle (vm: Component) {
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }
+    //把当前组建的实例加入到父组件中
     parent.$children.push(vm)
   }
 
