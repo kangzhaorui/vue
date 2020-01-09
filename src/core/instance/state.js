@@ -48,8 +48,8 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
-  if (opts.props) initProps(vm, opts.props)
-  if (opts.methods) initMethods(vm, opts.methods)
+  if (opts.props) initProps(vm, opts.props)//如果有props，就初始化props
+  if (opts.methods) initMethods(vm, opts.methods)//
   if (opts.data) {
     initData(vm)
   } else {
