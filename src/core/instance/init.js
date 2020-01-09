@@ -49,13 +49,13 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    initLifecycle(vm)
-    initEvents(vm)
+    initLifecycle(vm)//$parent  $root $children  $refs
+    initEvents(vm)//处理父组件传递的监听器
     initRender(vm)
     callHook(vm, 'beforeCreate')
-    initInjections(vm) // resolve injections before data/props
+    initInjections(vm) //获取注入数据，
     initState(vm)
-    initProvide(vm) // resolve provide after data/props
+    initProvide(vm) // 提供数据，   先注入在提供的原因是当前组件不一定是根组件，先获取之前父辈传过来的，声明了自己的数据 然后再提供给后代
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -66,6 +66,7 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     if (vm.$options.el) {
+      //传入的配置里面只要有el就会自动挂载一个$mount,
       vm.$mount(vm.$options.el)
     }
   }

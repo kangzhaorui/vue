@@ -48,8 +48,14 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
+<<<<<<< HEAD
   if (opts.props) initProps(vm, opts.props)//如果有props，就初始化props
   if (opts.methods) initMethods(vm, opts.methods)//
+=======
+  if (opts.props) initProps(vm, opts.props)
+  if (opts.methods) initMethods(vm, opts.methods)
+  //data处理，响应化处理
+>>>>>>> 56e6a57090fa977b113bc3b3d6c8bf4db47beaf0
   if (opts.data) {
     initData(vm)
   } else {
@@ -127,6 +133,7 @@ function initData (vm: Component) {
   const props = vm.$options.props
   const methods = vm.$options.methods
   let i = keys.length
+  // 判重
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
@@ -147,7 +154,7 @@ function initData (vm: Component) {
       proxy(vm, `_data`, key)
     }
   }
-  // observe data
+  // observe data：数据遍历开始了
   observe(data, true /* asRootData */)
 }
 

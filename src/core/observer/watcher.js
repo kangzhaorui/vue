@@ -44,7 +44,7 @@ export default class Watcher {
 
   constructor (
     vm: Component,
-    expOrFn: string | Function,
+    expOrFn: string | Function,//
     cb: Function,
     options?: ?Object,
     isRenderWatcher?: boolean
@@ -103,6 +103,7 @@ export default class Watcher {
     let value
     const vm = this.vm
     try {
+      //触发依赖收集的过程
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {

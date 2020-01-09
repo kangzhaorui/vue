@@ -13,7 +13,7 @@ const idToTemplate = cached(id => {
   const el = query(id)
   return el && el.innerHTML
 })
-
+//扩展$mount，处理template
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
@@ -30,6 +30,7 @@ Vue.prototype.$mount = function (
   }
 
   const options = this.$options
+  //render的优先级高，只有render不存在时才会考虑其他，render>template>el
   // resolve template/el and convert to render function
   if (!options.render) {
     let template = options.template
@@ -56,12 +57,13 @@ Vue.prototype.$mount = function (
     } else if (el) {
       template = getOuterHTML(el)
     }
+    //编译过程
     if (template) {
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
       }
-
+//编译过程是将template字符串转换成render函数
       const { render, staticRenderFns } = compileToFunctions(template, {
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,
