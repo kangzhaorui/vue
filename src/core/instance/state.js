@@ -46,16 +46,14 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 }
 
 export function initState (vm: Component) {
+  debugger
   vm._watchers = []
   const opts = vm.$options
-<<<<<<< HEAD
   if (opts.props) initProps(vm, opts.props)//如果有props，就初始化props
   if (opts.methods) initMethods(vm, opts.methods)//
-=======
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
   //data处理，响应化处理
->>>>>>> 56e6a57090fa977b113bc3b3d6c8bf4db47beaf0
   if (opts.data) {
     initData(vm)
   } else {
@@ -116,6 +114,7 @@ function initProps (vm: Component, propsOptions: Object) {
 }
 
 function initData (vm: Component) {
+  debugger
   let data = vm.$options.data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
@@ -295,6 +294,7 @@ function initMethods (vm: Component, methods: Object) {
 }
 
 function initWatch (vm: Component, watch: Object) {
+  debugger
   for (const key in watch) {
     const handler = watch[key]
     if (Array.isArray(handler)) {
@@ -313,6 +313,7 @@ function createWatcher (
   handler: any,
   options?: Object
 ) {
+  debugger
   if (isPlainObject(handler)) {
     options = handler
     handler = handler.handler

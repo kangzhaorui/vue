@@ -41,6 +41,7 @@ export class Observer {
   vmCount: number; // number of vms that have this object as root $data
 
   constructor (value: any) {
+    debugger
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
@@ -66,6 +67,7 @@ export class Observer {
   //如果数据是对象
   walk (obj: Object) {
     const keys = Object.keys(obj)
+    debugger
     for (let i = 0; i < keys.length; i++) {
       defineReactive(obj, keys[i])
     }
@@ -111,6 +113,8 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * or the existing observer if the value already has one.
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
+  //每一个observe都会返回一个ob
+  debugger
   if (!isObject(value) || value instanceof VNode) {
     return
   }
@@ -129,6 +133,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (asRootData && ob) {
     ob.vmCount++
   }
+  console.log('ob是什么',ob)
   return ob
 }
 
@@ -142,9 +147,11 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
+  debugger
   const dep = new Dep()
 
   const property = Object.getOwnPropertyDescriptor(obj, key)
+  console.log('property是什么----',property)
   if (property && property.configurable === false) {
     return
   }
@@ -164,6 +171,7 @@ export function defineReactive (
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       // 依赖收集
+      console.log('(Dep.target是什么-------',Dep.target)
       if (Dep.target) {
         dep.depend()//追加依赖关系
         // 判断子元素，如果有子ob存在
@@ -178,6 +186,7 @@ export function defineReactive (
       return value
     },
     set: function reactiveSetter (newVal) {
+      debugger
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {

@@ -19,7 +19,7 @@ export default class Dep {
     this.id = uid++
     this.subs = []
   }
-
+debugger
   addSub (sub: Watcher) {
     this.subs.push(sub)
   }
@@ -32,12 +32,15 @@ export default class Dep {
     if (Dep.target) {
       // Dep.target是watcher实例，建立和watcher之间的关系
       Dep.target.addDep(this)
+      console.log('这边的this又是什么----',this,'Dep.target======',Dep.target)
+      debugger
     }
   }
-
+//通知更新
   notify () {
     // stabilize the subscriber list first
     const subs = this.subs.slice()
+    debugger
     if (process.env.NODE_ENV !== 'production' && !config.async) {
       // subs aren't sorted in scheduler if not running async
       // we need to sort them now to make sure they fire in correct

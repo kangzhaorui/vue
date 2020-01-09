@@ -55,7 +55,7 @@ Vue.prototype.$mount = function (
         return this
       }
     } else if (el) {
-      template = getOuterHTML(el)
+      template = getOuterHTML(el)//存在el直接获取当前dom下的html字符串模板
     }
     //编译过程
     if (template) {
@@ -63,8 +63,8 @@ Vue.prototype.$mount = function (
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
       }
-//编译过程是将template字符串转换成render函数
-      const { render, staticRenderFns } = compileToFunctions(template, {
+      //编译过程是将template字符串转换成render函数
+      const { render, staticRenderFns } = compileToFunctions(template, {//编译模板
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,
         shouldDecodeNewlinesForHref,
@@ -81,7 +81,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
-  return mount.call(this, el, hydrating)
+  return mount.call(this, el, hydrating)//最后执行原先定义的mount方法
 }
 
 /**
