@@ -42,6 +42,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.set = function proxySetter (val) {
     this[sourceKey][key] = val
   }
+  //把数据做一个反向代理，在写vue时  可以通过this.属性获得，实质是this._data.属性
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
@@ -55,6 +56,7 @@ export function initState (vm: Component) {
   if (opts.methods) initMethods(vm, opts.methods)
   //data处理，响应化处理
   if (opts.data) {
+    debugger
     initData(vm)
   } else {
     observe(vm._data = {}, true /* asRootData */)
@@ -143,6 +145,7 @@ function initData (vm: Component) {
         )
       }
     }
+    //有重名的抛出警告
     if (props && hasOwn(props, key)) {
       process.env.NODE_ENV !== 'production' && warn(
         `The data property "${key}" is already declared as a prop. ` +

@@ -8,8 +8,9 @@
 </head>
 <body>
     <div id="app">
-        <h2>测试源码</h2>
+        <h2>测试lalala</h2>
         {{foo}}
+        <button @click='bian'>变化</button>
     </div>
 </body>
 <script src="../../dist/vue.js"></script>
@@ -19,6 +20,11 @@
      data:{
          foo:'foo'
      },
+     methods:{
+         bian(){
+             this.foo='bian'
+         }
+     }
  })
 </script>
 </html>

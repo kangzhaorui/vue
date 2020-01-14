@@ -29,6 +29,7 @@ debugger
   }
 
   depend () {
+    debugger
     if (Dep.target) {
       // Dep.target是watcher实例，建立和watcher之间的关系
       Dep.target.addDep(this)
@@ -36,6 +37,7 @@ debugger
       debugger
     }
   }
+  console.log('subs----------',this.subs)
 //通知更新
   notify () {
     // stabilize the subscriber list first

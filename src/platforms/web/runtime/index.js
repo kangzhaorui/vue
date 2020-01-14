@@ -34,12 +34,16 @@ extend(Vue.options.components, platformComponents)
 Vue.prototype.__patch__ = inBrowser ? patch : noop
 
 // public mount method
+// el: 可以是一个字符串或者Dom元素
+// hydrating 是Virtual DOM 的补丁算法参数
 //定义了$mount的方法，执行这个方法挂载mountComponent(this, el, hydrating)
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
+   // 判断el, 以及宿主环境, 然后通过工具函数query重写el。
   el = el && inBrowser ? query(el) : undefined
+   // 执行真正的挂载并返回
   return mountComponent(this, el, hydrating)
 }
 

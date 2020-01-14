@@ -39,6 +39,7 @@ export default class VNode {
     componentOptions?: VNodeComponentOptions,
     asyncFactory?: Function
   ) {
+    debugger
     this.tag = tag
     this.data = data
     this.children = children
