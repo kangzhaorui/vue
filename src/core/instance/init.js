@@ -29,6 +29,7 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     // a flag to avoid this being observed
+    // 防止vm实例自身被观察的标志位
     vm._isVue = true
     // merge options
     if (options && options._isComponent) {
@@ -62,12 +63,14 @@ export function initMixin (Vue: Class<Component>) {
 
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+      // 格式化组件名
       vm._name = formatComponentName(vm, false)
       mark(endTag)
       measure(`vue ${vm._name} init`, startTag, endTag)
     }
 
     if (vm.$options.el) {
+      debugger
       //传入的配置里面只要有el就会自动挂载一个$mount,
       vm.$mount(vm.$options.el)
     }

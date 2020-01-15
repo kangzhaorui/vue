@@ -117,10 +117,12 @@ function initProps (vm: Component, propsOptions: Object) {
 
 function initData (vm: Component) {
   debugger
+  // 得到data数据
   let data = vm.$options.data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
+    // 判断是否是对象
   if (!isPlainObject(data)) {
     data = {}
     process.env.NODE_ENV !== 'production' && warn(
@@ -130,11 +132,12 @@ function initData (vm: Component) {
     )
   }
   // proxy data on instance
+  // 遍历data对象拿到key值
   const keys = Object.keys(data)
   const props = vm.$options.props
   const methods = vm.$options.methods
   let i = keys.length
-  // 判重
+  // 判重，遍历data中的数据
   while (i--) {
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
@@ -142,10 +145,11 @@ function initData (vm: Component) {
         warn(
           `Method "${key}" has already been defined as a data property.`,
           vm
-        )
+          )
+        }
       }
-    }
-    //有重名的抛出警告
+      //有重名的抛出警告
+      // 保证data中的key不与props中的key重复，重复的话props优先，并产生警告
     if (props && hasOwn(props, key)) {
       process.env.NODE_ENV !== 'production' && warn(
         `The data property "${key}" is already declared as a prop. ` +
@@ -153,13 +157,20 @@ function initData (vm: Component) {
         vm
       )
     } else if (!isReserved(key)) {
+      // 代理，将data上面的属性代理到了vm实例上
       proxy(vm, `_data`, key)
     }
   }
-  // observe data：数据遍历开始了
+  // observe data：数据遍历开始了，开始对数据进行绑定，这里有尤大大的注释asRootData,这步作为根数据，下面要进行递归observe进行深层对象的绑定
   observe(data, true /* asRootData */)
 }
-
+/*observe会通过defineReactive对data中的对象进行双向绑定，最终通过Object.defineProperty对对象设置setter以及getter的方法。getter的方法主要用来进行依赖收集，
+ setter方法会在对象被修改的时候触发（不存在添加属性的情况，添加属性请用Vue.set），这时候setter
+ 通知闭包中的Dep，Dep中有一些订阅了这个对象改变的Watcher观察者对象，Dep会通知Watcher对象更新视图。
+ 如果是修改一个数组的成员，该成员是一个对象，那只需要递归对数组的成员进行双向绑定即可。但这时候出现了一个问题，？如果我们进行pop、push等操作的时候，push进去的
+ 对象根本没有进行过双向绑定，更别说pop了，那么我们如何监听数组的这些变化呢？
+ Vue.js提供的方法是重写push、pop、shift、unshift、splice、sort、reverse这七个数组方法。修改数组原型方法的代码可以参考observer/array.js以及observer/index.js。
+*/
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
   pushTarget()

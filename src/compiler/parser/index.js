@@ -21,18 +21,24 @@ import {
   getAndRemoveAttrByRegex
 } from '../helpers'
 
+/*匹配@以及v-on，绑定事件 */
 export const onRE = /^@|^v-on:/
+/*匹配v-、@以及: */
 export const dirRE = process.env.VBIND_PROP_SHORTHAND
   ? /^v-|^@|^:|^\.|^#/
   : /^v-|^@|^:|^#/
+  /*匹配v-for中的in以及of*/
 export const forAliasRE = /([\s\S]*?)\s+(?:in|of)\s+([\s\S]*)/
+/*v-for参数中带括号的情况匹配，比如(item, index)这样的参数*/
 export const forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/
 const stripParensRE = /^\(|\)$/g
 const dynamicArgRE = /^\[.*\]$/
 
 const argRE = /:(.*)$/
+/*匹配v-bind以及:*/
 export const bindRE = /^:|^\.|^v-bind:/
 const propBindRE = /^\./
+/*根据点来分开各个级别的正则，比如a.b.c.d解析后可以得到.b .c .d*/
 const modifierRE = /\.[^.\]]+(?=[^\]]*$)/g
 
 const slotRE = /^v-slot(:|$)|^#/
@@ -76,6 +82,7 @@ export function createASTElement (
 /**
  * Convert HTML string to AST.
  */
+/*parse会用正则等方式解析template模板中的指令、class、style等数据，形成AST语法树。 */
 export function parse (
   template: string,
   options: CompilerOptions

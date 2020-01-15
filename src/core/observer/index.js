@@ -46,8 +46,9 @@ export class Observer {
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
-    // 如果当前对象是数组
     if (Array.isArray(value)) {
+      // 如果当前对象是数组，将修改后可以截取响应的数组方法替换掉该数组的原型中的原生方法，达到监听数组数据变化响应的效果
+      //这里如果当前浏览器支持__proto__属性，则直接覆盖当前数组对象原型上的原生数组方法，如果不支持该属性，则直接覆盖数组对象的原型
       if (hasProto) {
         protoAugment(value, arrayMethods)
       } else {
@@ -89,6 +90,7 @@ export class Observer {
  * Augment a target Object or Array by intercepting
  * the prototype chain using __proto__
  */
+//直接覆盖原型的方法来修改目标对象或者数组
 function protoAugment (target, src: Object) {
   /* eslint-disable no-proto */
   target.__proto__ = src
@@ -100,6 +102,7 @@ function protoAugment (target, src: Object) {
  * hidden properties.
  */
 /* istanbul ignore next */
+// 定义覆盖目标对象或数组的某一个方法
 function copyAugment (target: Object, src: Object, keys: Array<string>) {
   for (let i = 0, l = keys.length; i < l; i++) {
     const key = keys[i]
